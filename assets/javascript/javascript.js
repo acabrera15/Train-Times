@@ -1,35 +1,53 @@
 /*
     TODO: LInk and configure firebase
 */
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyCafaCMpaYr7QZeBSHu3V5yDUibyHqBqOM",
+    authDomain: "trainsproj.firebaseapp.com",
+    databaseURL: "https://trainsproj.firebaseio.com",
+    projectId: "trainsproj",
+    storageBucket: "",
+    messagingSenderId: "67900234466",
+    appId: "1:67900234466:web:98853b97de0ffb73"
+  };
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
 
-/*
-    TODO: Create object for times
-        -new object pushed inside the TImes obj
-*/
-
-let TrainTimes = [
-    {
-        trainName: "Trenton Express",
-        destination: "Treton",
-        Frequency: 25,
-        nextArrival: 0,
-        minutesAway: 0
-    }
-]
 
 $(document).ready(function() {
-    var a = moment().format('HH')
-    console.log(a);
+  var a = moment().format("HH");
+  console.log(a);
+});
+
+$("#submit").on('click', function(event) {
+    event.preventDefault();
+
+    let trainName = $('#trainNameInput').val().trim();
+    let destination = $('#destinationInput').val().trim();
+    let firstTrainTime = $('#firstTrainTimeInput').val().trim();
+    let frequency = $('#frequencyInput').val().trim();
+    console.log(trainName, destination, firstTrainTime, frequency)
+    database.ref().push({
+        trainName,
+        destination,
+        firstTrainTime,
+        frequency
+    })
 })
 
-/*
-    TODO: function to update nextArrivalTimes
-*/
+database.ref().on('child_added', function(snapshot) {
 
-/*
-    TODO: function to update minutesAway
-*/
+    $("#trainSchedules").append(`<tr>
+    <td>${snapshot.val().trainName}</td>
+    <td>${snapshot.val().destination}</td>
+    <td>${snapshot.val().frequency}</td>
+    <td>${snapshot.val().firstTrainTime}</td>
+    <td>${'test'}</td>
+  </tr>`);
+})
 
-/*
-    TODO: function to update display with the times
-*/
+let calculateNextArrivalTime = function() {
+    
+}
