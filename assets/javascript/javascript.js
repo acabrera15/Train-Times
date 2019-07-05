@@ -99,8 +99,20 @@ let updateTimes = function() {
   for (var i = 1; i <= trainTimesCount; i++) {
     let currentMin = Number($(`#minutesUntilArrival${i}`).text());
     currentMin--;
-    $(`#minutesUntilArrival${i}`).text(currentMin)
-    console.log(currentMin)
+
+    if (currentMin > -1) {
+      $(`#minutesUntilArrival${i}`).text(currentMin)
+      console.log(currentMin)
+    } else {
+      let arrivalTime = moment($(`#nextArrivalTime${i}`).text(), 'HH:mm');
+      let freq = $(`#trainFrequency${i}`).text().trim();
+      let numFreq = Number(freq);
+      numFreq--;
+      const newTime = arrivalTime.add(freq, "minutes").format('h:mm A');
+      $(`#nextArrivalTime${i}`).text(newTime);
+      $(`#minutesUntilArrival${i}`).text(numFreq)
+    }
+
   }
 
 };
